@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html >
+<head>
+   
+    <title>Brian coffe Shop</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:Rosemarie, sans-serif;
+            background-image: url("7372.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Dark overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(245, 232, 204, 0.95);
+            padding: 18px;
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            background-color: #c65f1e;
+            color: white;
+            text-decoration: none;
+            padding: 9px 18px;
+            margin: 0 5px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        nav a.active,
+        nav a:hover {
+            background-color: #8f3f12;
+        }
+
+        /* About Container */
+        .about-container {
+            width: 85%;
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #9b4818;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            color: #9b4818;
+            font-size: 24px;
+            margin: 30px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #c65f1e;
+        }
+
+        /* Team & Customer Grid */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .person-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+            transition: transform 0.2s ease;
+        }
+
+        .person-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background-color: #f5e8cc;
+            color: #c65f1e;
+            font-size: 38px;
+            line-height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+        }
+
+        .person-card h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .role {
+            color: #c65f1e;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .desc {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+  
+  
+          .about-section h2 {
+            color: #9b4818;
+            font-size: 24px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #c65f1e;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .about-section p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .value-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #c65f1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .value-card h3 {
+            color: #9b4818;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .value-card p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+  
+  
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            padding: 3px;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        @media (max-width: 600px) {
+            .about-container {
+                width: 95%;
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            nav a {
+                margin: 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="homepage.html">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="product.html">Product</a>
+    </nav>
+
+    <!-- About Container -->
+    <div class="about-container">
+
+        <h1>About Our Family</h1>
+        <p class="subtitle">Meet the team and the regulars who make brian Coffee Shop feel like home.</p>
+
+        <!-- Our Staff Section -->
+        <h2 class="section-title">☕ The Team Behind the Beans</h2>
+        <div class="people-grid">
+
+            <!-- Owner -->
+            <div class="person-card">
+                <div class="avatar">👨‍🍳</div> 
+                <h3> Brian</h3>
+                <div class="role"> Owner & Master Roaster</div>
+                <p class="desc">Ducati Motorcycle Shop is a modern motorcycle shop that offers high-quality motorcycles for people who love speed, power, and adventure
+				Ducati is famous for its stylish designs, powerful engines, and excellent performance
+				The shop provides different types of motorcycles for riders who want to experience comfort, excitement, and freedom on the road</p>
+            </div>
+
+            <!-- Waitress -->
+            <div class="person-card">
+                <div class="avatar"></div>
+                <h3>  cherry</h3>
+                <div class="role">Head Waitress</div>
+                <p class="desc">The website has four main sections Home, Products, About, and Contact 
+				The Home section welcomes visitors with beautiful motorcycle images and an attractive design
+				The Products section displays different Ducati motorcycle models, including their names, prices, and descriptions
+				The About section explains the history, quality, and passion behind the Ducati brand
+				Lastly, the Contact section allows customers to send inquiries and ask for more information about the motorcycles</p>
+            </div>
+
+            <!-- Bodyguard -->
+            <div class="person-card">
+                <div class="avatar">💂‍♂️</div>
+                <h3>Berto</h3>
+                <div class="role">Shop Bodyguard</div>
+                <p class="desc">The purpose of the Ducati Motorcycle Shop website is to make it easier for customers to explore motorcycles and learn about their features
+				With its modern design, red and black colors, and user friendly navigation, the website provides an enjoyable browsing experience
+				Overall, the Ducati Motorcycle Shop website represents power, elegance, and innovation while helping motorcycle enthusiasts find their dream </p>
+            </div>
+
+        </div>
+
+        <!-- Favorite Customers Section -->
+        <h2 class="section-title">⭐ Favorite Regulars</h2>
+        <div class="people-grid">
+
+            <div class="person-card">
+                <div class="avatar">👨‍💻</div>
+                <h3>Alex</h3>
+                <div class="role">The Daily Freelancer</div>
+                <p class="desc">Sits at table 4 every morning, drinks Spanish Lattes, and types away on his laptop for hours.</p>
+            </div>
+
+            <div class="person-card">
+                <div class="avatar">🎨</div>
+                <h3>Sophia</h3>
+                <div class="role">The Resident Artist</div>
+                <p class="desc">Loves sketching near the window while sipping her Matcha Oat Latte and enjoying fresh croissants.</p>
+            </div>
+
+            <div class="person-card">
+                <div class="avatar">👴</div>
+                <h3>Tatay Juan</h3>
+                <div class="role">The Morning Storyteller</div>
+                <p class="desc">Visits every 8:00 AM sharp for his hot Americano and loves sharing Davao's old tales with our staff.</p>
+            </div>
+  
+               <div class="about-section">
+            <h2>Why Choose Us</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <h3>🌱 Premium Beans</h3>
+                    <p>We source high-quality, ethically grown beans to deliver rich and authentic flavors in every cup.</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>☕ Expert Baristas</h3>
+                    <p>Our skilled baristas craft each beverage with precision, care, and attention to detail.</p>
+                </div>
+
+                <div class="value-card">
+                    <h3>🏡 Cozy Atmosphere</h3>
+                    <p>A relaxing spot designed for work, conversation, or simply enjoying your daily brew.</p>
+                </div>
+            </div>
+          
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer> 
+        © 2026 Brian Coffee Shop | All Rights Reserved 
+    </footer> 
+
+</body>
+</html>

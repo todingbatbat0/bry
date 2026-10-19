@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Brian Coffee Shop</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+
+            background:
+                linear-gradient(
+                    rgba(29, 18, 12, 0.60),
+                    rgba(29, 18, 12, 0.80)
+                ),
+                url("https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1600&q=85");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* LOGIN CONTAINER */
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+
+            background: rgba(255, 250, 242, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+
+            animation: appear 0.8s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* PROFESSIONAL COFFEE SHOP LOGO */
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-image {
+            width: 135px;
+            height: 135px;
+            display: block;
+            margin: 0 auto 14px;
+            object-fit: contain;
+            border-radius: 50%;
+
+            background: #4b2e20;
+            border: 3px solid #d6a15d;
+            padding: 4px;
+
+            box-shadow:
+                0 0 0 5px rgba(214, 161, 93, 0.15),
+                0 8px 25px rgba(75, 46, 32, 0.25);
+
+            transition: transform 0.4s ease,
+                        box-shadow 0.4s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.08) rotate(2deg);
+
+            box-shadow:
+                0 0 0 7px rgba(214, 161, 93, 0.20),
+                0 12px 30px rgba(75, 46, 32, 0.35);
+        }
+
+        .logo h1 {
+            color: #4b2e20;
+            font-family: Georgia, serif;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #a4774e;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-top: 5px;
+        }
+
+        /* WELCOME TEXT */
+        .welcome {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .welcome h2 {
+            color: #332116;
+            font-family: Georgia, serif;
+            font-size: 27px;
+            margin-bottom: 9px;
+        }
+
+        .welcome p {
+            color: #85766a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* INPUT FIELDS */
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #4b2e20;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+
+            border: 1px solid #dfd0bf;
+            border-radius: 8px;
+
+            background: #fffdf9;
+            color: #332116;
+            font-size: 14px;
+
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #b67c42;
+            box-shadow: 0 0 0 3px rgba(182, 124, 66, 0.12);
+        }
+
+        .form-group input::placeholder {
+            color: #aaa096;
+        }
+
+        /* REMEMBER ME AND FORGOT PASSWORD */
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0 24px;
+            font-size: 12px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #75665a;
+        }
+
+        .remember input {
+            accent-color: #6b422a;
+        }
+
+        .options a {
+            color: #98612e;
+            text-decoration: none;
+        }
+
+        .options a:hover,
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        /* LOGIN BUTTON */
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #4b2e20;
+            color: white;
+
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #a66b35;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(75, 46, 32, 0.2);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* STATUS MESSAGE */
+        .message {
+            display: none;
+            padding: 12px;
+            margin-top: 16px;
+            border-radius: 7px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .message.error {
+            display: block;
+            background: #fbe9e5;
+            color: #963e2c;
+        }
+
+        .message.success {
+            display: block;
+            background: #e7f4e5;
+            color: #326b35;
+        }
+
+        /* CREATE ACCOUNT */
+        .signup {
+            text-align: center;
+            margin-top: 24px;
+            color: #85766a;
+            font-size: 13px;
+        }
+
+        .signup a {
+            color: #98612e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #a18e7c;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .login-container {
+                padding: 30px 23px;
+            }
+
+            .logo-image {
+                width: 110px;
+                height: 110px;
+            }
+
+            .logo h1 {
+                font-size: 27px;
+            }
+
+            .logo p {
+                letter-spacing: 3px;
+            }
+
+            .welcome h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <!-- BRIAN COFFEE SHOP LOGO -->
+        <div class="logo">
+            <img
+                src="10.jpg"
+                alt="Brian Coffee Shop Logo"
+                class="logo-image"
+            >
+
+            <h1></h1>
+            <p>COFFEE SHOP</p>
+        </div>
+
+        <!-- WELCOME -->
+        <div class="welcome">
+            <h2>Welcome Back!</h2>
+
+            <p>
+                Your favorite coffee is waiting.
+                Please log in to continue.
+            </p>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <div class="options">
+
+                <label class="remember">
+                    <input type="checkbox" id="remember">
+                    Remember me
+                </label>
+
+                <a href="#" id="forgotLink">
+                    Forgot password?
+                </a>
+
+            </div>
+
+            <button type="submit" class="login-btn">
+                LOGIN ☕
+            </button>
+
+            <div
+                class="message"
+                id="message"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+        </form>
+
+        <!-- CREATE ACCOUNT -->
+        <div class="signup">
+            New to Brian?
+            <a href="#" id="signupLink">Create an account</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            © 2026 Brian Coffee Shop
+            <br>
+            Made with love and coffee.
+        </div>
+
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+
+        // DEMO LOGIN CREDENTIALS
+        const correctEmail = "markbryan@gmail.com";
+        const correctPassword = "10232002";
+
+        // LOGIN VALIDATION
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email")
+                .value.trim();
+
+            const password = document.getElementById("password")
+                .value;
+
+            message.textContent = "";
+            message.className = "message";
+
+            if (
+                email === correctEmail &&
+                password === correctPassword
+            ) {
+                message.textContent =
+                    "Login successful! Opening homepage...";
+
+                message.className = "message success";
+
+                setTimeout(function() {
+                    window.location.href = "homepage.html";
+                }, 700);
+
+            } else {
+                message.textContent =
+                    "Incorrect email or password. Please try again.";
+
+                message.className = "message error";
+            }
+        });
+
+        // FORGOT PASSWORD
+        document.getElementById("forgotLink")
+            .addEventListener("click", function(event) {
+                event.preventDefault();
+
+                alert(
+                    "Please contact the website administrator " +
+                    "to reset your password."
+                );
+            });
+
+        // CREATE ACCOUNT
+        document.getElementById("signupLink")
+            .addEventListener("click", function(event) {
+                event.preventDefault();
+
+                alert(
+                    "The registration page has not been created yet."
+                );
+            });
+    </script>
+
+</body>
+</html>

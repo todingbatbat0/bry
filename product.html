@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Products - Brian Coffee Shop</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("7372.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: -1;
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: rgba(245, 232, 204, 0.95);
+            padding: 18px;
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            background-color: #c65f1e;
+            color: white;
+            text-decoration: none;
+            padding: 9px 18px;
+            margin: 4px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        nav a.active,
+        nav a:hover {
+            background-color: #8f3f12;
+        }
+
+        .cart-toggle {
+            background: #4b2e20;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 4px;
+        }
+
+        .cart-toggle:hover {
+            background: #8f3f12;
+        }
+
+        /* PRODUCTS CONTAINER */
+        .products-container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #9b4818;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .category-title {
+            color: #9b4818;
+            font-size: 24px;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #c65f1e;
+        }
+
+        /* PRODUCT GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(220px, 1fr)
+            );
+            gap: 25px;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card h3 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 14px;
+        }
+
+        .product-card .desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .product-card .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c65f1e;
+            margin-bottom: 12px;
+        }
+
+        /* ADD TO CART BUTTON */
+        .cart-btn {
+            background-color: #4b2e20;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .cart-btn:hover {
+            background-color: #a66b35;
+        }
+
+        /* SHOPPING CART */
+        .cart-panel {
+            display: none;
+            width: 85%;
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 30px;
+            background: #fffaf2;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-panel h2 {
+            color: #9b4818;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #dfd0bf;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info strong {
+            color: #4b2e20;
+        }
+
+        .cart-item-info p {
+            margin-top: 6px;
+            color: #777;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .cart-controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .cart-controls button {
+            padding: 7px 11px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .quantity-btn {
+            background: #e9d7c3;
+            color: #4b2e20;
+        }
+
+        .remove-btn {
+            background: #a83232;
+            color: white;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 23px;
+            font-weight: bold;
+            color: #9b4818;
+            margin-top: 22px;
+        }
+
+        .cart-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .cart-actions button {
+            padding: 11px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .clear-cart-btn {
+            background: #777;
+            color: white;
+        }
+
+        .continue-btn {
+            background: #4b2e20;
+            color: white;
+        }
+
+        .empty-cart {
+            color: #777;
+            padding: 15px 0;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            color: white;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.75);
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .products-container,
+            .cart-panel {
+                width: 92%;
+                padding: 22px;
+                margin: 25px auto;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .category-title {
+                font-size: 21px;
+            }
+
+            .cart-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .cart-total {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="product.html" class="active">Product</a>
+
+        <button
+            type="button"
+            class="cart-toggle"
+            id="cartToggle"
+            aria-expanded="false"
+            aria-controls="cartPanel"
+        >
+            🛒 Cart (<span id="cartCount">0</span>)
+        </button>
+    </nav>
+
+    <!-- SHOPPING CART PANEL -->
+    <section
+        class="cart-panel"
+        id="cartPanel"
+        aria-label="Shopping cart"
+    >
+        <h2>🛒 Your Shopping Cart</h2>
+
+        <div id="cartItems" aria-live="polite">
+            <p class="empty-cart">
+                Your cart is empty. Add some coffee!
+            </p>
+        </div>
+
+        <div class="cart-total">
+            Total: ₱<span id="cartTotal">0.00</span>
+        </div>
+
+        <div class="cart-actions">
+            <button
+                type="button"
+                class="clear-cart-btn"
+                id="clearCart"
+            >
+                Clear Cart
+            </button>
+
+            <button
+                type="button"
+                class="continue-btn"
+                id="continueShopping"
+            >
+                Continue Shopping
+            </button>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <main class="products-container">
+
+        <h1>Our Menu</h1>
+
+        <p class="subtitle">
+            Freshly brewed coffee, delicious desserts, and cozy moments.
+            Choose your favorites and add them to your cart!
+        </p>
+
+        <!-- HOT COFFEE -->
+        <h2 class="category-title">☕ Hot Coffee</h2>
+
+        <div class="products-grid">
+
+            <div class="product-card">
+                <h3>Signature Espresso</h3>
+                <img src="jem.jpg" alt="Signature Espresso">
+                <p class="desc">
+                    Rich and bold double shot of our specialty roasted house blend.
+                </p>
+                <div class="price">₱110.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Signature Espresso" data-price="110">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Caffe Latte</h3>
+                <img src="jem1.jpg" alt="Caffe Latte">
+                <p class="desc">
+                    Smooth espresso layered with velvety steamed milk and light foam.
+                </p>
+                <div class="price">₱140.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Caffe Latte" data-price="140">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Cappuccino</h3>
+                <img src="jem2.jpg" alt="Cappuccino">
+                <p class="desc">
+                    Classic espresso topped with steamed milk and dense foam.
+                </p>
+                <div class="price">₱140.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Cappuccino" data-price="140">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Spanish Latte</h3>
+                <img src="jem3.jpg" alt="Spanish Latte">
+                <p class="desc">
+                    Espresso combined with fresh milk and sweet condensed milk.
+                </p>
+                <div class="price">₱155.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Spanish Latte" data-price="155">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Hot Chocolate</h3>
+                <img src="jem11.jpg" alt="Hot Chocolate">
+                <p class="desc">
+                    Warm, rich chocolate blended with creamy steamed milk.
+                </p>
+                <div class="price">₱130.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Hot Chocolate" data-price="155">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Iced Coffee</h3>
+                <img src="jem12.jpg" alt="Iced Coffee">
+                <p class="desc">
+                    Refreshing coffee served chilled over ice.
+                </p>
+                <div class="price">₱119.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Iced Coffee" data-price="155">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+        </div>
+
+        <!-- COLD BEVERAGES -->
+        <h2 class="category-title">🧊 Cold Beverages</h2>
+
+        <div class="products-grid">
+
+            <div class="product-card">
+                <h3>Iced Caramel Macchiato</h3>
+                <img src="jem4.jpg" alt="Iced Caramel Macchiato">
+                <p class="desc">
+                    Chilled milk, espresso, vanilla syrup, and caramel drizzle.
+                </p>
+                <div class="price">₱165.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Iced Caramel Macchiato" data-price="165">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Iced Americano</h3>
+                <img src="jem6.jpg" alt="Iced Americano">
+                <p class="desc">
+                    Fresh espresso shots poured over ice and purified water.
+                </p>
+                <div class="price">₱120.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Iced Americano" data-price="120">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Matcha Oat Latte</h3>
+                <img src="jem7.jpg" alt="Matcha Oat Latte">
+                <p class="desc">
+                    Premium Japanese matcha whisked with creamy oat milk.
+                </p>
+                <div class="price">₱170.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Matcha Oat Latte" data-price="170">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+        </div>
+
+        <!-- PASTRIES -->
+        <h2 class="category-title">🥐 Pastries &amp; Sweets</h2>
+
+        <div class="products-grid">
+
+            <div class="product-card">
+                <h3>Butter Croissant</h3>
+                <img src="jem8.jpg" alt="Butter Croissant">
+                <p class="desc">
+                    Flaky, golden, and freshly baked every morning.
+                </p>
+                <div class="price">₱85.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Butter Croissant" data-price="85">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Fudgy Chocolate Brownie</h3>
+                <img src="jem9.jpg" alt="Chocolate Brownie">
+                <p class="desc">
+                    Rich dark chocolate brownie with a crinkly top.
+                </p>
+                <div class="price">₱95.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Fudgy Chocolate Brownie" data-price="95">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card">
+                <h3>Blueberry Cheesecake</h3>
+                <img src="jem10.jpg" alt="Blueberry Cheesecake">
+                <p class="desc">
+                    Creamy cheesecake topped with sweet blueberries.
+                </p>
+                <div class="price">₱160.00</div>
+                <button type="button" class="cart-btn"
+                    data-name="Blueberry Cheesecake" data-price="160">
+                    🛒 Add to Cart
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 Brian Coffee Shop | All Rights Reserved
+    </footer>
+
+    <script>
+        // Shopping cart data
+        const cart = [];
+
+        const cartToggle = document.getElementById("cartToggle");
+        const cartPanel = document.getElementById("cartPanel");
+        const cartItems = document.getElementById("cartItems");
+        const cartCount = document.getElementById("cartCount");
+        const cartTotal = document.getElementById("cartTotal");
+        const clearCart = document.getElementById("clearCart");
+        const continueShopping =
+            document.getElementById("continueShopping");
+
+        // Add products to cart
+        document.querySelectorAll(".cart-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                const name = this.dataset.name;
+                const price = Number(this.dataset.price);
+
+                const existingItem = cart.find(
+                    item => item.name === name
+                );
+
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({
+                        name: name,
+                        price: price,
+                        quantity: 1
+                    });
+                }
+
+                updateCart();
+
+                // Open the cart after adding a product
+                cartPanel.style.display = "block";
+                cartToggle.setAttribute("aria-expanded", "true");
+
+                // Brief button confirmation
+                const originalText = this.textContent;
+                this.textContent = "✓ Added to Cart";
+
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 900);
+            });
+        });
+
+        // Update cart display
+        function updateCart() {
+            cartItems.innerHTML = "";
+
+            let total = 0;
+            let count = 0;
+
+            if (cart.length === 0) {
+                const emptyMessage = document.createElement("p");
+                emptyMessage.className = "empty-cart";
+                emptyMessage.textContent =
+                    "Your cart is empty. Add some coffee!";
+
+                cartItems.appendChild(emptyMessage);
+            }
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+
+                total += subtotal;
+                count += item.quantity;
+
+                const row = document.createElement("div");
+                row.className = "cart-item";
+
+                const info = document.createElement("div");
+                info.className = "cart-item-info";
+
+                const title = document.createElement("strong");
+                title.textContent = item.name;
+
+                const details = document.createElement("p");
+                details.textContent =
+                    "₱" + item.price.toFixed(2) +
+                    " each | Subtotal: ₱" + subtotal.toFixed(2);
+
+                info.appendChild(title);
+                info.appendChild(details);
+
+                const controls = document.createElement("div");
+                controls.className = "cart-controls";
+
+                const minus = document.createElement("button");
+                minus.type = "button";
+                minus.className = "quantity-btn";
+                minus.textContent = "−";
+                minus.setAttribute(
+                    "aria-label", "Decrease " + item.name
+                );
+
+                minus.addEventListener("click", () => {
+                    item.quantity--;
+
+                    if (item.quantity <= 0) {
+                        cart.splice(index, 1);
+                    }
+
+                    updateCart();
+                });
+
+                const quantity = document.createElement("span");
+                quantity.textContent = item.quantity;
+
+                const plus = document.createElement("button");
+                plus.type = "button";
+                plus.className = "quantity-btn";
+                plus.textContent = "+";
+                plus.setAttribute(
+                    "aria-label", "Increase " + item.name
+                );
+
+                plus.addEventListener("click", () => {
+                    item.quantity++;
+                    updateCart();
+                });
+
+                const remove = document.createElement("button");
+                remove.type = "button";
+                remove.className = "remove-btn";
+                remove.textContent = "Remove";
+
+                remove.addEventListener("click", () => {
+                    cart.splice(index, 1);
+                    updateCart();
+                });
+
+                controls.append(minus, quantity, plus, remove);
+                row.append(info, controls);
+                cartItems.appendChild(row);
+            });
+
+            cartCount.textContent = count;
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        // Open and close cart panel
+        cartToggle.addEventListener("click", function() {
+            const isOpen = cartPanel.style.display === "block";
+
+            cartPanel.style.display = isOpen ? "none" : "block";
+
+            cartToggle.setAttribute(
+                "aria-expanded", String(!isOpen)
+            );
+
+            if (!isOpen) {
+                cartPanel.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        });
+
+        // Clear the cart
+        clearCart.addEventListener("click", function() {
+            cart.length = 0;
+            updateCart();
+        });
+
+        // Continue shopping
+        continueShopping.addEventListener("click", function() {
+            cartPanel.style.display = "none";
+            cartToggle.setAttribute("aria-expanded", "false");
+
+            document.querySelector(".products-container")
+                .scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+        });
+
+        // Initial cart display
+        updateCart();
+    </script>
+
+</body>
+</html>
